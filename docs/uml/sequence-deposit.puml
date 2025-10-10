@@ -1,0 +1,17 @@
+@startuml
+actor Customer
+participant App
+participant BankService as Bank
+participant InMemoryBankService as Impl
+participant Account as Acc
+
+Customer -> App: request deposit(accountNumber, amount)
+App -> Bank: deposit(accountNumber, amount)
+Bank -> Impl: deposit(accountNumber, amount)
+Impl -> Impl: getRequiredAccount(accountNumber)
+Impl -> Acc: deposit(amount)
+Acc --> Impl: balance updated
+Impl --> Bank: success
+Bank --> App: success
+App --> Customer: confirmation
+@enduml
