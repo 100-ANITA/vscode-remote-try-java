@@ -1,0 +1,20 @@
+@startuml
+actor Customer
+participant App
+participant BankService as Bank
+participant InMemoryBankService as Impl
+participant InvestmentAccount as Inv
+participant Customer as Cust
+
+Customer -> App: open investment(initialDeposit)
+App -> Bank: openInvestmentAccount(Cust, branch, initialDeposit)
+Bank -> Impl: openInvestmentAccount(...)
+Impl -> Impl: accountNumberGenerator.next()
+Impl -> Inv: new(accountNumber, owner, branch, initialDeposit)
+Inv -> Inv: validate min BWP500
+Inv -> Inv: deposit(initialDeposit)
+Impl -> Cust: addAccount(Inv)
+Impl --> Bank: Inv
+Bank --> App: Inv
+App --> Customer: account details
+@enduml

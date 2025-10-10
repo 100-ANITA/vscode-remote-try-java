@@ -1,0 +1,69 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface InterestBearing {
+  + getMonthlyInterestRate(): BigDecimal
+  + applyMonthlyInterest(): void
+}
+
+abstract class Account {
+  - accountNumber: String
+  - branch: String
+  - owner: Customer
+  - balance: BigDecimal
+  + getAccountNumber(): String
+  + getBranch(): String
+  + getOwner(): Customer
+  + getBalance(): BigDecimal
+  + deposit(amount: BigDecimal)
+  + withdraw(amount: BigDecimal)
+}
+
+class SavingsAccount
+class InvestmentAccount
+class ChequeAccount
+
+class Customer {
+  - customerId: UUID
+  - firstName: String
+  - surname: String
+  - address: String
+  + getFullName(): String
+  + getAccounts(): List<Account>
+  + addAccount(account: Account)
+}
+
+class EmploymentDetails {
+  - companyName: String
+  - companyAddress: String
+  + isValid(): boolean
+}
+
+interface BankService {
+  + openSavingsAccount(owner: Customer, branch: String): SavingsAccount
+  + openInvestmentAccount(owner: Customer, branch: String, initial: BigDecimal): InvestmentAccount
+  + openChequeAccount(owner: Customer, branch: String, employment: EmploymentDetails): ChequeAccount
+  + deposit(account: Account, amount: BigDecimal)
+  + withdraw(account: Account, amount: BigDecimal)
+  + applyMonthlyInterestToAllInterestBearingAccounts(): void
+}
+
+class InMemoryBankService
+class AccountNumberGenerator {
+  + next(): String
+}
+
+SavingsAccount --|> Account
+InvestmentAccount --|> Account
+ChequeAccount --|> Account
+
+SavingsAccount ..|> InterestBearing
+InvestmentAccount ..|> InterestBearing
+
+Customer "1" o-- "0..*" Account : owns
+ChequeAccount --> EmploymentDetails : requires
+
+InMemoryBankService ..|> BankService
+InMemoryBankService --> AccountNumberGenerator
+
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+state "Interest Application" as IA {
+  [*] --> Idle
+  Idle --> Calculating : triggerMonthlyRun
+  Calculating --> Applying : interest > 0
+  Calculating --> Failed : error
+  Applying --> Completed : balance updated
+  Completed --> Idle : nextCycle
+  Failed --> Idle : retry
+}
+@enduml
