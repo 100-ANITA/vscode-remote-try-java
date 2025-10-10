@@ -1,35 +1,98 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.mycompany.app</groupId>
-  <artifactId>my-app</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>my-app</name>
-  <url>https://github.com/microsoft/vscode-remote-try-java</url>
+  <groupId>com.example</groupId>
+  <artifactId>banking-system</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <name>Banking System</name>
+  <description>Core banking system domain model and JavaFX UI (profile)</description>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javafx.version>21.0.4</javafx.version>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
+
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.2</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <properties>
-    <jdk.version>11</jdk.version>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M6</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>${maven.compiler.release}</release>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <useModulePath>false</useModulePath>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>com.example.banking.ui.MainApp</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>with-javafx</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-controls</artifactId>
+          <version>${javafx.version}</version>
+          <classifier>linux</classifier>
+        </dependency>
+        <dependency>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-fxml</artifactId>
+          <version>${javafx.version}</version>
+          <classifier>linux</classifier>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <version>3.5.0</version>
+            <executions>
+              <execution>
+                <id>add-javafx-sources</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>add-source</goal>
+                </goals>
+                <configuration>
+                  <sources>
+                    <source>src/main/javafx</source>
+                  </sources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
