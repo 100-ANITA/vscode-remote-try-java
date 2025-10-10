@@ -1,0 +1,73 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+interface InterestBearing {
+  + getMonthlyInterestRate(): BigDecimal
+  + calculateMonthlyInterest(): BigDecimal
+  + applyMonthlyInterest(): void
+}
+
+class Customer {
+  - customerId: String
+  - firstName: String
+  - surname: String
+  - address: String
+  - employmentInfo: EmploymentInfo
+  + getAccounts(): List<Account>
+}
+
+class EmploymentInfo {
+  - companyName: String
+  - companyAddress: String
+}
+
+abstract class Account {
+  - accountNumber: String
+  - branch: String
+  - owner: Customer
+  - balance: BigDecimal
+  + deposit(amount: BigDecimal)
+  + withdraw(amount: BigDecimal)
+}
+
+class SavingsAccount
+class InvestmentAccount
+class ChequeAccount
+
+class Bank {
+  - name: String
+  - branch: String
+  + registerCustomer(...)
+  + openSavingsAccount(...)
+  + openInvestmentAccount(...)
+  + openChequeAccount(...)
+  + deposit(...)
+  + withdraw(...)
+  + applyMonthlyInterest()
+}
+
+Customer "1" o-- "*" Account : owns
+Account <|-- SavingsAccount
+Account <|-- InvestmentAccount
+Account <|-- ChequeAccount
+
+InterestBearing <|.. SavingsAccount
+InterestBearing <|.. InvestmentAccount
+
+Bank --> Customer
+Bank --> Account
+
+note right of SavingsAccount
+No withdrawals; 0.05% monthly interest
+end note
+
+note right of InvestmentAccount
+Withdrawals allowed; 5% monthly interest
+Minimum opening deposit BWP500.00
+end note
+
+note right of ChequeAccount
+Deposits and withdrawals allowed
+Requires EmploymentInfo to open
+end note
+@enduml

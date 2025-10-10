@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+actor Customer
+actor BankClerk as Clerk
+
+rectangle BankingSystem {
+  usecase "Register Customer" as UC1
+  usecase "Open Savings Account" as UC2
+  usecase "Open Investment Account" as UC3
+  usecase "Open Cheque Account" as UC4
+  usecase "Deposit Funds" as UC5
+  usecase "Withdraw Funds" as UC6
+  usecase "Apply Monthly Interest" as UC7
+  usecase "View Account Balance" as UC8
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC6
+Customer --> UC8
+Clerk --> UC7
+
+UC4 .u.> UC1 : <<include>>
+UC3 .u.> UC1 : <<include>>
+UC2 .u.> UC1 : <<include>>
+
+note right of UC3
+Requires initial deposit >= BWP500.00
+end note
+
+note right of UC4
+Requires EmploymentInfo
+end note
+@enduml
