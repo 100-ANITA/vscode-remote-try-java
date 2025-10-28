@@ -1,0 +1,14 @@
+@startuml
+actor Customer
+participant "Bank" as Bank
+participant "AuthService" as Auth
+
+Customer -> Bank: login(username, password)
+Bank -> Auth: validateCredentials(username, password)
+Auth --> Bank: validationResult
+alt success
+  Bank --> Customer: session token
+else failure
+  Bank --> Customer: error message
+end
+@enduml

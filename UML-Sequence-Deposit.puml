@@ -1,0 +1,10 @@
+@startuml
+actor Customer
+participant "Bank" as Bank
+participant "Account" as Acc
+
+Customer -> Bank: deposit(accountNumber, amount)
+Bank -> Acc: deposit(amount)
+Acc --> Bank: newBalance
+Bank --> Customer: confirmation
+@enduml
