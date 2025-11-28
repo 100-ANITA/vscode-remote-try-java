@@ -1,0 +1,11 @@
+@startuml
+[*] --> Idle
+Idle --> Calculating : monthly schedule
+state Calculating {
+  [*] --> ComputeInterest
+  ComputeInterest --> ApplyIfPositive : interest > 0
+  ComputeInterest --> [*] : interest == 0
+  ApplyIfPositive --> [*]
+}
+Calculating --> Idle : complete
+@enduml
